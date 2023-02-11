@@ -8,38 +8,37 @@ import (
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/knownhosts"
 )
 
 var config *ssh.ClientConfig
 
-func init() {
-	key, err := os.ReadFile("/Users/bytedance/.ssh/id_rsa")
-	if err != nil {
-		log.Fatalf("unable to read private key: %v", err)
-		return
-	}
-	// Create the Signer for this private key.
-	signer, err := ssh.ParsePrivateKey(key)
-	if err != nil {
-		log.Fatalf("unable to parse private key: %v", err)
-		return
-	}
-	// ssh config
-	hostKeyCallback, err := knownhosts.New("/Users/bytedance/.ssh/known_hosts")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	config = &ssh.ClientConfig{
-		User: "adam.liu",
-		Auth: []ssh.AuthMethod{
-			// Use the PublicKeys method for remote authentication.
-			ssh.PublicKeys(signer),
-		},
-		HostKeyCallback: hostKeyCallback,
-	}
-}
+// func init() {
+// 	key, err := os.ReadFile("/Users/bytedance/.ssh/id_rsa")
+// 	if err != nil {
+// 		log.Fatalf("unable to read private key: %v", err)
+// 		return
+// 	}
+// 	// Create the Signer for this private key.
+// 	signer, err := ssh.ParsePrivateKey(key)
+// 	if err != nil {
+// 		log.Fatalf("unable to parse private key: %v", err)
+// 		return
+// 	}
+// 	// ssh config
+// 	hostKeyCallback, err := knownhosts.New("/Users/bytedance/.ssh/known_hosts")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 		return
+// 	}
+// 	config = &ssh.ClientConfig{
+// 		User: "adam.liu",
+// 		Auth: []ssh.AuthMethod{
+// 			// Use the PublicKeys method for remote authentication.
+// 			ssh.PublicKeys(signer),
+// 		},
+// 		HostKeyCallback: hostKeyCallback,
+// 	}
+// }
 
 func CopyFile(path string) error {
 	conn, err := ssh.Dial("tcp", "10.37.6.177:22", config)
