@@ -1,5 +1,12 @@
 # README
 
+## Intro 
+非常简化版的ss客户端，主要是为了验证用wails framework开发cross-platform的webview客户端，
+统一desktop && network application所用语言为golang.
+
+ss代码分离自 https://github.com/shadowsocks/go-shadowsocks2
+
+
 ## About
 
 This is the official Wails Vue-TS template.
