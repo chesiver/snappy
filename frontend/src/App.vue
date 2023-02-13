@@ -1,84 +1,43 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
-import HelloWorld from './components/HelloWorld.vue'
-import { ConnectShadowsocks, DumpLogContent } from '../wailsjs/go/main/App';
+import { defineComponent, reactive, ref } from 'vue';
+import Connection from './components/Connection.vue'
+import Cipher from './components/Cipher.vue';
+import Client from './components/Client.vue';
 import { LogInfo } from '../wailsjs/runtime';
+import { state } from './state';
 
-// const filePath = reactive({ fullPath: '' });
+defineComponent({
+  components: {
+    Connection,
+    Cipher,
+    Client
+  }
+});
 
+const tab = ref("connection");
 const logMessage = reactive({ message: '' });
-const host = ref('10.36.189.159');
-const port = ref('8488');
-const cipher = ref('AEAD_CHACHA20_POLY1305');
-
-const connectShadowsocks = async () => {
-  setInterval(async () => {
-    logMessage.message = await DumpLogContent(false);
-  }, 1000);
-  LogInfo('Connect with params: ' + [host.value, port.value, cipher.value].join(', '));
-  await ConnectShadowsocks(host.value, port.value, cipher.value);
-}
-
-const clearLogMessage = async () => {
-  logMessage.message = await DumpLogContent(true)
-}
-
-
 
 </script>
 
 <template>
-  <v-app>
-    <v-app-bar app :elevation="2">
+  <v-app id="shadowsocks">
+    <v-app-bar app :elevation="2" class="bg-light-blue">
       <v-app-bar-title>Wails GUI for Shadowsocks</v-app-bar-title>
     </v-app-bar>
+    <v-navigation-drawer permanent expand-on-hover rail theme="dark" class="bg-deep-purple">
+      <v-list density="compact" nav>
+        <v-list-item prepend-icon="mdi-view-dashboard-edit" title="Connection"
+          @click="tab = 'connection'"></v-list-item>
+        <v-list-item prepend-icon="mdi-lock" title="Cipher" @click="tab = 'cipher';"></v-list-item>
+        <v-list-item prepend-icon="mdi-upload" title="Client" @click="tab = 'client';"></v-list-item>
+        <v-list-item prepend-icon="mdi-server" title="Remote" @click="tab = 'remote';"></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
     <v-main>
       <v-container grey lighten-5>
-        <v-row class="mb-2" align="center" no-gutters>
-          <v-col cols="16">
-            <v-text-field label="IP Address" v-model="host"></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field label="Port" v-model="port"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="6">
-            <v-select label="Cipher" :items="[
-              {
-                'title': 'Dummy',
-                'value': 'DUMMY'
-              },
-              {
-                'title': 'AES_128_GCM',
-                'value': 'AEAD_AES_128_GCM'
-              },
-              {
-                'title': 'AES_256_GCM',
-                'value': 'AEAD_AES_256_GCM'
-              },
-              {
-                'title': 'CHACHA20_POLY1305',
-                'value': 'AEAD_CHACHA20_POLY1305'
-              }
-            ]" v-model="cipher"></v-select>
-          </v-col>
-        </v-row>
-        <v-row class="mb-4" align="center" no-gutters>
-          <v-col cols="2">
-            <v-btn @click="connectShadowsocks">
-              Connect
-            </v-btn>
-          </v-col>
-          <v-col cols="2">
-            <v-btn @click="clearLogMessage">
-              Clear
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row align="center" no-gutters>
-          <v-textarea :value="logMessage.message" readonly rows="20"></v-textarea>
-        </v-row>
+        <Connection v-if="tab === 'connection'"></Connection>
+        <Cipher v-if="tab === 'cipher'"></Cipher>
+        <Client v-if="tab === 'client'"></Client>
       </v-container>
     </v-main>
   </v-app>
