@@ -4,6 +4,7 @@ import { LogInfo } from '../../wailsjs/runtime/runtime';
 import { state } from '../state';
 
 const connectShadowsocks = async () => {
+    LogInfo('Start Connection');
     setInterval(async () => {
         state.logMessage = await DumpLogContent(false);
     }, 1000);
@@ -31,6 +32,6 @@ const clearLogMessage = async () => {
         </v-col>
     </v-row>
     <v-row align="center" no-gutters>
-        <v-textarea label="Socks Log" :value="state.logMessage" readonly rows="20"></v-textarea>
+        <v-textarea label="Socks Log" :model-value="state.logMessage" readonly rows="20"></v-textarea>
     </v-row>
 </template>

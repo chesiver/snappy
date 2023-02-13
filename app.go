@@ -67,13 +67,11 @@ func (a *App) ConnectShadowsocks(host, port, cipher string) {
 	// 	Message: "Connection started!",
 	// })
 	addr := fmt.Sprintf("ss://%v:wjlydntms38@%v:%v", cipher, host, port)
-	err := shadowclient.Start(addr, "", "wjlydntms38", ":1080")
-	if err != nil {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Title:   "Warning",
-			Message: "Connection start failed!",
-		})
-	}
+	go shadowclient.Start(addr, "", "wjlydntms38", ":1080")
+	// runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+	// 	Title:   "Info",
+	// 	Message: "Connection started!",
+	// })
 }
 
 func (a *App) DumpLogContent(truncate bool) string {
