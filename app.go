@@ -87,7 +87,6 @@ type ListDirectoryEntriesResult struct {
 
 func (a *App) Connect(host, authType string, args ...interface{}) {
 	params := args[0].([]interface{})
-	fmt.Printf("!!!!!!: %v\n", params)
 	if authType == "password" {
 		ssh.InitConfigForUsernamePassword(params[0].(string), params[1].(string))
 	} else if authType == "publicKey" {

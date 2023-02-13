@@ -16,7 +16,6 @@ var config *ssh.ClientConfig
 var sftpClient *sftp.Client
 
 func InitConfigForUsernamePassword(username, password string) {
-	fmt.Printf("!!!!!!: %v %v\n", username, password)
 	config = &ssh.ClientConfig{
 		User: username,
 		Auth: []ssh.AuthMethod{
